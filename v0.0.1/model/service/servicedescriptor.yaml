@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: 'MME Conversion'
+  description: 'Takes in a prescription and calculates the morphone equivalent dose'
+servers:
+  - url: '/mme/conversion/v0.0.1/'
+    description: TBD
+tags:
+  - name: KO Endpoints
+    description: Object Service Endpoints
+paths:
+  /echo:
+    post:
+      description: Return milligram morphine equivalent
+      operationId: calculateMME
+      requestBody:
+        description: inputs
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/echoOutput'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    user:
+      required:
+        - inputs
+      properties:
+        dose-drugname pair:
+          type: string
+          example: '{"dose"  : "10", "drugname"  : "Hydromorphone"}'
+    Output:
+      required:
+        - result
+      properties:
+        result:
+          type: float
+          example: 24.2
+    error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
